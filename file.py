@@ -15,19 +15,19 @@ while True:
     cv2.imshow('frame', frame)
     # Press q to close the window
 
-
+    input('Press Enter to Start')
     import random
 
-    #if(prediction[0][3]) > 0.8:
-    #    user_choice = ('None')
-    #elif(prediction[0][1]) > 0.8:
-    #    user_choice = ('Paper')
-    #elif(prediction[0][2]) > 0.8:
-    #    user_choice = ('Scissors')
-    #else:
-    #    user_choice = ('Rock')
+    if(prediction[0][3]) > 0.8:
+        user_choice = ('None')
+    elif(prediction[0][1]) > 0.8:
+        user_choice = ('Paper')
+    elif(prediction[0][2]) > 0.8:
+        user_choice = ('Scissors')
+    else:
+        user_choice = ('Rock')
     
-    #print(f'You chose {user_choice}')
+    print(f'You chose {user_choice}')
 
     computer_choice = random.randint(0,2)
 
@@ -40,6 +40,24 @@ while True:
     
     print(f'Computer chose {computer_choice}')
     
+    if user_choice == 'Rock' and computer_choice == 'Paper':
+        print('Computer Won')
+    elif user_choice == 'Rock' and computer_choice == 'Scissors':
+        print('You Won')
+
+    elif user_choice == 'Paper' and computer_choice == 'Rock':
+        print('You Won')
+    elif user_choice == 'Paper' and computer_choice == 'Scissors':
+        print('You Lost')
+    
+    else:
+        print('Draw')
+
+
+    elif user_choice == 'Scissors' and computer_choice == 'Rock':
+        print('You Lost')
+    elif user_choice == 'Scissors' and computer_choice == 'Paper':
+        print('You Won')
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
