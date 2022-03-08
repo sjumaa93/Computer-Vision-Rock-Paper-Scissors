@@ -29,35 +29,29 @@ while True:
     
     print(f'You chose {user_choice}')
 
-    computer_choice = random.randint(0,2)
-
-    if(computer_choice) == 0:
-        computer_choice = ('Rock')
-    elif(computer_choice) == 1:
-        computer_choice = ('Paper')
-    else:
-        computer_choice = ('Scissors')
+    computer_choice = random.choice(['Rock','Paper','Scissors'])
     
     print(f'Computer chose {computer_choice}')
-    
+
+
     if user_choice == 'Rock' and computer_choice == 'Paper':
         print('Computer Won')
     elif user_choice == 'Rock' and computer_choice == 'Scissors':
         print('You Won')
-
+    elif user_choice == 'None':
+        print('You Chose Nothing, You Lost')
     elif user_choice == 'Paper' and computer_choice == 'Rock':
         print('You Won')
     elif user_choice == 'Paper' and computer_choice == 'Scissors':
         print('You Lost')
-    
-    else:
-        print('Draw')
-
 
     elif user_choice == 'Scissors' and computer_choice == 'Rock':
         print('You Lost')
     elif user_choice == 'Scissors' and computer_choice == 'Paper':
         print('You Won')
+    
+    else:
+        print('Draw')
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
