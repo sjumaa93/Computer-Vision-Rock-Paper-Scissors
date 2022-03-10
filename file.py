@@ -6,8 +6,6 @@ import time
 model = load_model('keras_model.h5')
 cap = cv2.VideoCapture(0)
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-t_0 = time.time()
-
 
 def compare_options(computer_choice,user_choice):   
     if user_choice == 'Rock' and computer_choice == 'Paper':
@@ -40,6 +38,8 @@ def get_user_choice(prediction):
     
     return user_choice
 
+t_0 = time.time()
+timer = 0
 
 while True: 
     ret, frame = cap.read()
@@ -48,7 +48,6 @@ while True:
     normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
     data[0] = normalized_image
     prediction = model.predict(data)
-    cv2. flip(frame,1)  #flip camera
 
     user_choice = get_user_choice(prediction)
     computer_choice = random.choice(['Rock','Paper','Scissors'])
@@ -56,10 +55,11 @@ while True:
     print(f'Computer chose {computer_choice}')
     print(f'You chose {user_choice}')
 
-   
+ 
     message = compare_options(computer_choice, user_choice)
+
     
-    cv2.putText(frame, message, (10, 30), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 2)
+    cv2.putText(frame, message, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
