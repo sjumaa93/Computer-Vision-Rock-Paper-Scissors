@@ -4,10 +4,10 @@ The model 'keras_model_h5' has been trained to detect whether I am showing rock,
 
 # Requirements
 
-> Python
-> OpenCV
-> Keras
-> Tensorflow
+- Python
+- OpenCV
+- Keras
+- Tensorflow
 
 # How it Works
 
