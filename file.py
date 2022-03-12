@@ -27,19 +27,24 @@ def compare_options(computer_choice,user_choice):
     return message
 
 def get_user_choice(prediction):
-    if(prediction[0][3]) > 0.5:
-        user_choice = ('None')
-    elif(prediction[0][1]) > 0.5:
-        user_choice = ('Paper')
+    if(prediction[0][1]) > 0.5:
+        user_choice = ('Rock')
     elif(prediction[0][2]) > 0.5:
+        user_choice = ('Paper')
+    elif(prediction[0][3]) > 0.5:
         user_choice = ('Scissors')
     else:
-        user_choice = ('Rock')
+        user_choice = ('None')
     
     return user_choice
 
 t_0 = time.time()
 timer = 0
+message = ''
+counter = False
+show_msg = False
+user_wins = 0
+computer_wins = 0
 
 while True: 
     ret, frame = cap.read()
@@ -49,15 +54,26 @@ while True:
     data[0] = normalized_image
     prediction = model.predict(data)
 
-    user_choice = get_user_choice(prediction)
-    computer_choice = random.choice(['Rock','Paper','Scissors'])
+
+
+    timer = time.time() - t_0 #timer starts counting
+
+    if counter: #if counter is true
+        if show_msg == False: #check winner and show message
+                user_choice = get_user_choice(prediction)
+                computer_choice = random.choice(['Rock','Paper','Scissors'])
    
-    print(f'Computer chose {computer_choice}')
-    print(f'You chose {user_choice}')
+                print(f'Computer chose {computer_choice}')
+                print(f'You chose {user_choice}')
+                message = compare_options(computer_choice, user_choice)
+                show_msg = True
+    else: #otherwise show nothing
+        message = ''
 
- 
-    message = compare_options(computer_choice, user_choice)
 
+    if timer > 5: #only start when counter reaches 5 seconds
+            counter = True #restart the loop
+            t_0 = time.time() #restart the timer
     
     cv2.putText(frame, message, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     cv2.imshow('frame', frame)
