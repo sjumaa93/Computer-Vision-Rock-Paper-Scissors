@@ -7,23 +7,23 @@ model = load_model('keras_model.h5')
 cap = cv2.VideoCapture(0)
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-def compare_options(computer_choice,user_choice):   
+def compare_options(computer_choice,user_choice):
     if user_choice == 'Rock' and computer_choice == 'Paper':
-        message = 'Computer Won!'
+        message = 'You chose rock, computer chose paper, Computer Won!'
     elif user_choice == 'Rock' and computer_choice == 'Scissors':
-        message = 'You Won!'
+        message = 'You chose rock, computer chose scissors, You Won!'
     elif user_choice == 'None':
         message = 'You Chose Nothing, You Lost!'
     elif user_choice == 'Paper' and computer_choice == 'Rock':
-        message = 'You Won!'
+        message = 'You chose paper, computer chose rock, You Won!'
     elif user_choice == 'Paper' and computer_choice == 'Scissors':
-        message = 'You Lost!'
+        message = 'You chose paper, computer chose scissors, You Lost!'
     elif user_choice == 'Scissors' and computer_choice == 'Rock':
-        message = 'You Lost!'
+        message = 'You chose scissors, computer chose rock, You Lost!'
     elif user_choice == 'Scissors!' and computer_choice == 'Paper':
-        message = 'You Won!'
+        message = 'You chose scissors, computer chose paper, You Won!'
     else:
-        message = 'Draw'
+        message = 'You both chose the same thing, its a Draw!'
     return message
 
 def get_user_choice(prediction):
@@ -38,13 +38,19 @@ def get_user_choice(prediction):
     
     return user_choice
 
-t_0 = time.time()
-timer = 0
-message = ''
-counter = False
-show_msg = False
+started = False
+next_round = True
+countdown = False
+counter = 0
+elapsed = 0
+show_message = False
+game_over = False
+
 user_wins = 0
 computer_wins = 0
+
+message = ''
+
 
 while True: 
     ret, frame = cap.read()
@@ -56,24 +62,46 @@ while True:
 
 
 
-    timer = time.time() - t_0 #timer starts counting
+    if not started:
+        message = 'Press s to start'
+    if cv2.waitKey(33)  == ord('s'):
+        if not started:
+            counter = time.time()
+            started = True
+            countdown = True
 
-    if counter: #if counter is true
-        if show_msg == False: #check winner and show message
+    if started:
+        elapsed = 5 - (time.time() - counter)
+    
+        if elapsed <= -4:
+            if computer_wins == 3:
+                message = f'Your Wins: {user_wins} Computer Wins: {computer_wins}, Game Over You Lose!'
+            elif user_wins == 3:
+                message = f'Your Wins: {user_wins} Computer Wins: {computer_wins}, Well Done, You Won!'
+            else:
+                message = f'Your Wins: {user_wins} Computer Wins: {computer_wins}. Press n to continue' 
+            if cv2.waitKey(33) == ord('n'):
+                started = False
+                elapsed = 0
+                show_message = False
+
+        elif elapsed <= 0:
+            countdown = False
+            if show_message == False:
                 user_choice = get_user_choice(prediction)
                 computer_choice = random.choice(['Rock','Paper','Scissors'])
-   
-                print(f'Computer chose {computer_choice}')
-                print(f'You chose {user_choice}')
                 message = compare_options(computer_choice, user_choice)
-                show_msg = True
-    else: #otherwise show nothing
-        message = ''
+                if 'You Won' in message:
+                    user_wins += 1
+                elif 'Computer Won' in message:
+                    computer_wins += 1
+                show_message = True
 
+        if countdown:
+            message = f'Show your hand in {int(elapsed)} seconds'
 
-    if timer > 5: #only start when counter reaches 5 seconds
-            counter = True #restart the loop
-            t_0 = time.time() #restart the timer
+ 
+
     
     cv2.putText(frame, message, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     cv2.imshow('frame', frame)
