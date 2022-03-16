@@ -9,7 +9,7 @@ data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 def compare_options(computer_choice,user_choice):
     if user_choice == 'Rock' and computer_choice == 'Paper':
-        message = 'You chose rock, computer chose paper, Computer Won!'
+        message = 'You chose rock, computer chose paper, You Lost!'
     elif user_choice == 'Rock' and computer_choice == 'Scissors':
         message = 'You chose rock, computer chose scissors, You Won!'
     elif user_choice == 'None':
@@ -44,7 +44,6 @@ countdown = False
 counter = 0
 elapsed = 0
 show_message = False
-game_over = False
 
 user_wins = 0
 computer_wins = 0
@@ -93,7 +92,7 @@ while True:
                 message = compare_options(computer_choice, user_choice)
                 if 'You Won' in message:
                     user_wins += 1
-                elif 'Computer Won' in message:
+                elif 'You Lost' in message:
                     computer_wins += 1
                 show_message = True
 
