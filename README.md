@@ -1,7 +1,5 @@
 # Computer-Vision-Rock-Paper-Scissors
 
-![alt text](https://i.ibb.co/MpDt4RC/Screenshot-2022-05-19-at-8-06-08-pm.png)
-
 The model 'keras_model_h5' has been trained to detect whether I am showing rock, paper or scissors to the camera. The computer randomly generates rock, paper or scissors. The game can be run using 'file.py'. The winner is decided once either the user or the computer has 3 wins.
 
 # Requirements
